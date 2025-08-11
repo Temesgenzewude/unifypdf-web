@@ -7,7 +7,7 @@ type QueuedPdf = {
   id: string;
 };
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3050";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const MAX_FILES = 20;
 const MAX_FILE_SIZE_BYTES = 25 * 1024 * 1024; // 25MB per file
 
