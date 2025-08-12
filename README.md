@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## UnifyPDF — Web
 
-## Getting Started
+Next.js web app for uploading, reordering, merging, previewing, and downloading PDFs. Built with a trust-first UI and no server-side storage of files.
 
-First, run the development server:
+### Features
+- **Upload & reorder**: Drag-and-drop or file picker; move items up/down.
+- **Merge PDFs**: Sends PDFs to the backend merge endpoint and returns a single file.
+- **Preview & download**: Inline preview of the merged PDF; download or open in a new tab.
+- **Privacy-first**: Files are processed in-memory; no server-side storage.
+- **Theming**: Light/Dark/System toggle via `next-themes`.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Tech stack
+- **Next.js App Router** 15, **React** 19, **TypeScript**
+- **Tailwind CSS v4** with custom CSS variables in `app/globals.css`
+- **shadcn/ui primitives** (Radix UI) and **lucide-react** icons
+- **next-themes** for theme switching
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Prerequisites
+- Node.js 18+ (LTS) or 20+
+- pnpm (recommended), npm, yarn, or bun
+- A running backend (NestJS) providing the merge endpoint
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## How it works
+- The UI queues up to 20 PDFs (≤ 25 MB each) and maintains order.
+- On Merge, the app POSTs to `${NEXT_PUBLIC_API_BASE_URL}/pdf/merge` with `multipart/form-data` under `files`.
+- The backend merges in-memory and returns `application/pdf`.
+- The UI previews the resulting Blob via `URL.createObjectURL` and lets the user download.
+- If the queue is cleared, preview and related actions are hidden.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Theming
+- Provided by `next-themes` using the `class` attribute.
+- Toggle component lives in `components/ThemeToggle.tsx` and uses shadcn/ui + Radix Dropdown.
+- Design tokens (colors, radii) are defined in `app/globals.css` using Tailwind v4 and CSS variables (light/dark palettes).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Privacy
+Files are processed in-memory only and not stored server-side.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
